@@ -12,6 +12,9 @@ export class User {
 
   @Prop({ type: String, required: true })
   password: string;
+
+  @Prop({ type: Date, required: false, default: false })
+  mobileVerifiedAt: Date;
 }
 
 export type UserDocument = HydratedDocument<User>;

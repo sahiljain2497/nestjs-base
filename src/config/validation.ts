@@ -31,6 +31,18 @@ class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   JWT_SECRET: string;
+
+  @IsString()
+  @IsNotEmpty()
+  TWILIO_ACCOUNT_SID: string;
+
+  @IsString()
+  @IsNotEmpty()
+  TWILIO_AUTH_TOKEN: string;
+
+  @IsString()
+  @IsNotEmpty()
+  TWILIO_VERIFICATION_SERVICE_ID: string;
 }
 
 export function validate(config: Record<string, unknown>) {

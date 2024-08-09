@@ -28,6 +28,20 @@ export class UsersService {
     return this.userModel.findOne({ email }).exec();
   }
 
+  async findByEmailOrMobile(emailOrMobile: string): Promise<UserDocument> {
+    return this.userModel
+      .findOne({ $or: [{ email: emailOrMobile }, { mobile: emailOrMobile }] })
+      .exec();
+  }
+
+  async findOne(filter: {
+    mobile?: string;
+    email?: string;
+    name?: string;
+  }): Promise<UserDocument> {
+    return this.userModel.findOne(filter).exec();
+  }
+
   async findAll(): Promise<UserDocument[]> {
     return this.userModel.find().exec();
   }
@@ -37,5 +51,15 @@ export class UsersService {
     options: PaginateOptions,
   ): Promise<PaginateResult<UserDocument[]>> {
     return this.userModel.paginate(filter, options);
+  }
+
+  async updateUser(_id: ObjectId, updateBody: any): Promise<UserDocument> {
+    return this.userModel
+      .findOneAndUpdate({ _id }, { $set: updateBody }, { new: true })
+      .exec();
+  }
+
+  async deleteById(_id: ObjectId) {
+    return this.userModel.deleteOne({ _id }).exec();
   }
 }

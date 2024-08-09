@@ -10,13 +10,13 @@ export class UsersController {
 
   @Get()
   async listUsers(@Query() queryParams: PaginationDto) {
-    const result = await this.userService.findPaginated({}, { ...queryParams });
-    return { data: result };
+    const users = await this.userService.findPaginated({}, { ...queryParams });
+    return { users };
   }
 
   @Get(':id')
   async getUser(@Param('id', ParseObjectIdPipe) id: ObjectId) {
     const user = await this.userService.findById(id);
-    return { data: { user } };
+    return { user };
   }
 }

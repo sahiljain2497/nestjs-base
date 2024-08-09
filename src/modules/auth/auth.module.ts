@@ -4,10 +4,19 @@ import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TwilioModule } from 'nestjs-twilio';
 
 @Module({
   imports: [
     UsersModule,
+    TwilioModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        accountSid: configService.get<string>('TWILIO_ACCOUNT_SID'),
+        authToken: configService.get<string>('TWILIO_AUTH_TOKEN'),
+      }),
+      inject: [ConfigService],
+    }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
