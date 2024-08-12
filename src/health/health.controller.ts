@@ -1,10 +1,21 @@
-import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import {
+  HealthCheck,
+  HealthCheckService,
+  MongooseHealthIndicator,
+} from '@nestjs/terminus';
 
 @Controller('health')
 export class HealthController {
-  @HttpCode(HttpStatus.OK)
+  constructor(
+    private health: HealthCheckService,
+    private mongooseIndicator: MongooseHealthIndicator,
+  ) {}
   @Get()
-  healthCheck() {
-    return 'OK';
+  @HealthCheck()
+  check() {
+    return this.health.check([
+      () => this.mongooseIndicator.pingCheck('mongodb'),
+    ]);
   }
 }
