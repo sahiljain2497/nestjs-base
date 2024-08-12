@@ -13,7 +13,10 @@ export class User {
   @Prop({ type: String, required: true })
   password: string;
 
-  @Prop({ type: Date, required: false, default: false })
+  @Prop({ type: String, required: true })
+  mobile: string;
+
+  @Prop({ type: Date, required: false, default: null })
   mobileVerifiedAt: Date;
 }
 

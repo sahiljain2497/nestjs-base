@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import {
-  ObjectId,
+  Types,
   PaginateModel,
   PaginateOptions,
   PaginateResult,
+  ObjectId,
 } from 'mongoose';
 import { CreateUserDto } from './dtos/users.dto';
 import * as bcrypt from 'bcrypt';
@@ -20,7 +21,7 @@ export class UsersService {
     return createdUser.save();
   }
 
-  async findById(id: ObjectId): Promise<UserDocument> {
+  async findById(id: Types.ObjectId | ObjectId): Promise<UserDocument> {
     return this.userModel.findOne({ _id: id }).exec();
   }
 
@@ -53,13 +54,16 @@ export class UsersService {
     return this.userModel.paginate(filter, options);
   }
 
-  async updateUser(_id: ObjectId, updateBody: any): Promise<UserDocument> {
+  async updateUser(
+    _id: Types.ObjectId,
+    updateBody: any,
+  ): Promise<UserDocument> {
     return this.userModel
       .findOneAndUpdate({ _id }, { $set: updateBody }, { new: true })
       .exec();
   }
 
-  async deleteById(_id: ObjectId) {
+  async deleteById(_id: Types.ObjectId) {
     return this.userModel.deleteOne({ _id }).exec();
   }
 }

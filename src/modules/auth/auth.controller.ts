@@ -13,6 +13,7 @@ import {
   ChangePasswordDto,
   RegisterDto,
   ResendMobileVerificationDto,
+  ResetPasswordDto,
   SignInDto,
   VerifyMobileDto,
 } from './dtos/auth.dto';
@@ -39,13 +40,27 @@ export class AuthController {
     return this.authService.register(registerDto);
   }
 
+  @Post('forgotPassword')
+  async forgotPassword(@Body() mobileData: ResendMobileVerificationDto) {
+    await this.authService.forgotPassword(mobileData);
+    return { message: 'OTP has been sent to your registered number!' };
+  }
+
+  @Post('resetPassword')
+  resetPassword(@Body() resetPasswordData: ResetPasswordDto) {
+    return this.authService.resetPassword(resetPasswordData);
+  }
+
   @Post('resendMobileVerification')
-  resendMobileVerification(@Body() mobileData: ResendMobileVerificationDto) {
-    return this.authService.resendMobileVerification(mobileData);
+  async resendMobileVerification(
+    @Body() mobileData: ResendMobileVerificationDto,
+  ) {
+    await this.authService.resendMobileVerification(mobileData);
+    return { message: 'OTP has been sent to your registered number!' };
   }
 
   @Post('verifyMobile')
-  verifyMobile(@Body() verifyMobileData: VerifyMobileDto) {
+  async verifyMobile(@Body() verifyMobileData: VerifyMobileDto) {
     return this.authService.verifyMobile(verifyMobileData);
   }
 
@@ -56,7 +71,7 @@ export class AuthController {
     @Body() password: ChangePasswordDto,
   ) {
     const user = await this.authService.changePassword(req.user.id, password);
-    return { data: { user } };
+    return { data: { user }, message: 'Password has been changed' };
   }
 
   @UseGuards(AuthGuard)

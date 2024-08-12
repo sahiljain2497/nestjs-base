@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 
 export interface AuthenticatedRequest extends Request {
-  user: { id: ObjectId; email: string };
+  user: { id: Types.ObjectId; email: string };
 }

@@ -8,9 +8,11 @@ import { validate } from './config/validation';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
+    CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],

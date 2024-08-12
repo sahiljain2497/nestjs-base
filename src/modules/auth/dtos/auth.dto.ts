@@ -6,6 +6,7 @@ import {
   IsStrongPassword,
   MaxLength,
 } from 'class-validator';
+import { IntersectionType } from '@nestjs/mapped-types';
 
 export class SignInDto {
   @IsString()
@@ -27,6 +28,7 @@ export class RegisterDto {
   name: string;
 
   @IsMobilePhone()
+  @IsNotEmpty()
   mobile: string;
 
   @IsStrongPassword({
@@ -67,3 +69,8 @@ export class VerifyMobileDto {
   @MaxLength(6)
   otp: string;
 }
+
+export class ResetPasswordDto extends IntersectionType(
+  ChangePasswordDto,
+  VerifyMobileDto,
+) {}
